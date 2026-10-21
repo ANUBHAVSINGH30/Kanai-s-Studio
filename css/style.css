@@ -2,7 +2,7 @@
 :root{--bg:#EEF0EB;--ink:#1D2822;--mute:#5F6B64;--line:#CBD1C8;--rose:#A9525F;--card:#E1E5DE;--r:14px}
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font:400 1rem/1.6 Figtree,system-ui,sans-serif;min-height:100vh}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.6 Figtree,system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--rose);outline-offset:3px}
 h1,h2{font-family:"Bodoni Moda",Georgia,serif;font-weight:500;line-height:1.1}
@@ -63,6 +63,20 @@ main{padding:clamp(1.5rem,4vw,3rem) clamp(1rem,5vw,3.5rem) 4rem;max-width:1200px
 .play{position:absolute;inset:auto auto 12px 12px;width:38px;height:38px;border-radius:50%;background:var(--bg);display:grid;place-items:center}
 .play::after{content:"";border-left:11px solid var(--ink);border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
 .cap{margin-top:.6rem;font-size:1.05rem;line-height:1.35}
+.home-portfolios{display:flex;flex-direction:column;gap:clamp(3.5rem,8vw,6rem);margin-top:clamp(4rem,10vw,7rem)}
+.home-section{padding-top:clamp(1.5rem,3vw,2.25rem);border-top:1px solid var(--line)}
+.home-section h2{margin-bottom:1.25rem;font-size:clamp(2.2rem,4.5vw,3.5rem)}
+.home-rail{display:flex;gap:1rem;overflow-x:auto;overscroll-behavior-x:contain;padding:0 0 .65rem;scroll-snap-type:x mandatory;scrollbar-width:none}
+.home-rail::-webkit-scrollbar{display:none}
+.home-rail .card{flex:0 0 clamp(250px,27vw,360px);scroll-snap-align:start}
+.home-rail .im{overflow:hidden;border-radius:var(--r);background:var(--card)}
+.home-rail img{display:block;width:100%;height:100%;object-fit:cover}
+.home-videos .im{aspect-ratio:16/9}.home-reels .card{flex-basis:clamp(160px,16vw,220px)}.home-reels .im{aspect-ratio:9/16}.home-photos .card{flex-basis:clamp(180px,20vw,250px)}.home-photos .im{aspect-ratio:4/5}
+.home-see-all{display:inline-flex;align-items:center;gap:.5rem;margin-top:1rem;padding:.5rem 1rem;border:1.5px solid var(--ink);border-radius:999px;font:500 1rem "Bodoni Moda",Georgia,serif;transition:background .2s,color .2s}
+.home-see-all:hover{background:var(--ink);color:var(--bg)}
+.home-see-all span{font:1.2rem/1 Figtree,sans-serif}
+.route-contact-cta{display:flex;flex-direction:column;align-items:center;gap:1rem;margin-top:clamp(4rem,8vw,6rem);padding:clamp(2.5rem,6vw,4rem) 1rem;border-top:1px solid var(--line);text-align:center}
+.route-contact-cta p{font-family:"Bodoni Moda",Georgia,serif;font-size:clamp(1.6rem,3vw,2.2rem)}
 button.card{background:none;border:0;padding:0;text-align:left;font:inherit;color:inherit;cursor:zoom-in}
 .car{display:none}
 .empty{padding:3rem 0;color:var(--mute)}
@@ -133,6 +147,16 @@ button.card{background:none;border:0;padding:0;text-align:left;font:inherit;colo
  .rows{width:100%;gap:.9rem}
  .row{min-height:64px;padding:.55rem .65rem;font-size:1rem}
  .row .ic,.row b{width:44px;height:44px}
+ .home-portfolios{gap:3.5rem;margin-top:4rem}
+ .home-section{padding-top:1.5rem}
+ .home-section h2{margin-bottom:1rem;font-size:2.35rem}
+ .home-rail{gap:14px;margin-right:-18px;padding-right:18px;scroll-padding-left:0}
+ .home-rail .card{flex-basis:min(82vw,340px)}
+ .home-reels .card{flex-basis:min(43vw,180px)}
+ .home-photos .card{flex-basis:min(48vw,205px)}
+ .home-rail .cap{margin-top:.5rem;font-size:.92rem}
+ .home-see-all{margin-top:.85rem}
+ .route-contact-cta{margin-top:3.5rem;padding:2.5rem 0}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.badge{animation:none}}
 
@@ -173,16 +197,13 @@ body {
 
   main:has(.hero) {
     max-width: 1500px;
-    height: calc(100svh - 76px);
-    min-height: 0;
+    min-height: calc(100svh - 76px);
     padding: 12px clamp(2rem, 5vw, 5rem);
-    display: flex;
-    flex-direction: column;
   }
 
   .hero {
     flex: 1;
-    min-height: 0;
+    min-height: calc(100svh - 100px);
     grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
     gap: clamp(2rem, 4vw, 4rem);
     align-items: center;
@@ -239,8 +260,8 @@ body {
   .desc-desktop{display:none}
   .desc-mobile{display:inline}
   main:has(.hero) {
-    display: flex;
-    min-height: calc(100svh - 61px);
+    display: block;
+    min-height: 0;
     padding: 18px clamp(16px, 5vw, 24px);
   }
 

@@ -24,16 +24,18 @@ async function load(name) {
 const empty = msg => `<p class="empty">${msg}</p>`;
 const head = (t, extra = "") => `<div class="sec-h"><h2>${t}</h2>${extra}</div>`;
 const fail = t => head(t) + empty(`${t} could not be loaded. Please try again later.`);
+const contactCta = `<section class="route-contact-cta"><p>Let’s create something memorable.</p><a class="btn fill" href="#/contact">Contact &#8594;</a></section>`;
 
 const pages = {
   async home() {
-    const s = await load("site") || {};
+    const [siteData, photoData, videoData, reelData] = await Promise.all([
+      load("site"), load("photos"), load("videos"), load("reels")
+    ]);
+    const s = siteData || {};
     const name = s.name || "Kanai";
     const configuredStrip = Array.isArray(s.filmStrip)
   ? s.filmStrip.filter(Boolean).slice(0, 2)
   : [];
-
-const photoData = await load("photos");
 
 const strip = configuredStrip.length
   ? configuredStrip
@@ -43,6 +45,15 @@ const strip = configuredStrip.length
     const stats = Array.isArray(s.stats) ? s.stats.slice(0, 3) : [];
     const desc = s.description ?? "Capturing real emotions, honest moments and timeless love stories through films and photographs.";
     const mobileDesc = s.mobileDescription || desc;
+    const videos = Array.isArray(videoData) ? videoData.slice(0, 4) : [];
+    const reels = Array.isArray(reelData) ? reelData.slice(0, 6) : [];
+    const photos = Array.isArray(photoData) ? photoData.slice(0, 6) : [];
+    const rail = (title, href, type, cards) => `<section class="home-section home-${type}">
+      <h2>${title}</h2><div class="home-rail" aria-label="${title}">${cards}</div>
+      <a class="home-see-all" href="${href}">See All <span aria-hidden="true">&#8594;</span></a></section>`;
+    const videoCards = videos.map(v => `<a class="card" href="${esc(v.link)}" target="_blank" rel="noopener"><div class="im"><img loading="lazy" src="${esc(v.thumb)}" alt="${esc(v.title)}"><span class="play"></span></div><div class="cap">${esc(v.title)}</div></a>`).join("");
+    const reelCards = reels.map(v => `<a class="card" href="${esc(v.link)}" target="_blank" rel="noopener"><div class="im"><img loading="lazy" src="${esc(v.thumb)}" alt="${esc(v.caption)}"><span class="play"></span></div><div class="cap">${esc(v.caption)}</div></a>`).join("");
+    const photoCards = photos.map(p => `<a class="card" href="#/photos"><div class="im"><img loading="lazy" src="${esc(p.file)}" alt="${esc(p.alt || p.caption)}"></div>${p.caption ? `<div class="cap">${esc(p.caption)}</div>` : ""}</a>`).join("");
     return `<section class="hero">
       <div class="hero-text">
         <div class="hero-copy">
@@ -62,7 +73,11 @@ const strip = configuredStrip.length
         <svg class="badge" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="circ" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
           <text><textPath href="#circ" textLength="270" lengthAdjust="spacing">REAL MOMENTS &#8226; TIMELESS MEMORIES &#8226; </textPath></text></svg>
       </div>
-    </section>`;
+    </section><div class="home-portfolios">
+      ${videos.length ? rail("Videos", "#/videos", "videos", videoCards) : ""}
+      ${reels.length ? rail("Reels", "#/reels", "reels", reelCards) : ""}
+      ${photos.length ? rail("Photos", "#/photos", "photos", photoCards) : ""}
+    </div>`;
   },
   async videos() {
     const d = await load("videos");
@@ -140,7 +155,7 @@ function wirePhotos(d) {
 async function route() {
   const key = (location.hash.replace(/^#\/?/, "") || "home").split("?")[0];
   const page = pages[key] || pages.home;
-  view.innerHTML = await page();
+  view.innerHTML = await page() + (key === "contact" ? "" : contactCta);
   document.title = key === "home" || !pages[key] ? "Kanai's Portfolio" : `${key[0].toUpperCase() + key.slice(1)} | Kanai's Portfolio`;
   nav.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#/" + key));
   nav.classList.remove("open"); burger.setAttribute("aria-expanded", "false");
