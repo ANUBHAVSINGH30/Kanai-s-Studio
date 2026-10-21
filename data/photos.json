@@ -1,0 +1,8 @@
+[
+  {"date": "2026-10-17", "file": "assets/photos/image1.jpg", "alt": "Anubhav image", "caption": "Priyanka and Ritesh "},
+  { "date": "2026-10-10", "file": "assets/photos/image2.jpg", "alt": "Couple at sunset", "caption": "Rahul & Priya" },
+  { "date": "2026-10-09", "file": "assets/photos/image3.jpg", "alt": "Bride getting ready", "caption": "Getting ready" },
+  { "date": "2026-09-02", "file": "assets/photos/image4.jpg", "alt": "Groom portrait", "caption": "Ankit" },
+  { "date": "2026-09-01", "file": "assets/photos/image5.jpg", "alt": "Haldi ceremony", "caption": "Haldi" },
+  { "date": "2026-07-18", "file": "assets/photos/image6.jpg", "alt": "Pre-wedding portrait", "caption": "Mohan & Dia" }
+]
